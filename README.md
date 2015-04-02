@@ -20,7 +20,7 @@
 
 	*	`$ python extract_data_from_form.py -f -t S-1 -c 35921 -s 2001-03-21 -e 2009-05-18`
 		
-		It will fuzzy match type `S-1` of company with CIK `35921` with publishing date starting from `2001-03-21` ending to '2009-05-18' inclusively. 
+		It will fuzzy match type `S-1` of company with CIK `35921` with publishing date starting from `2001-03-21` ending to `2009-05-18` inclusively. 
 
 	*	`$ python extract_data_from_form.py`
 		
