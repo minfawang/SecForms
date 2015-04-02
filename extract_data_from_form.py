@@ -1,27 +1,47 @@
-import csv
-import argparse
 
-with open("all_form_idx.csv", "r") as fin:
-	data = list(csv.reader(fin, delimiter='\t'))
-print("finished reading data")
 
 
 
 if __name__ == '__main__':
+	import csv
+	import argparse
 
 	parser = argparse.ArgumentParser()
-	parser.add_argument('f_type', help='form type such as S-1, RW, etc.')
+	parser.add_argument('-t', '--type', help='form type such as S-1, RW, etc.')
+	parser.add_argument('-s', '--start', help='start date of search range')
+	parser.add_argument('-e', '--end', help='end date of search range')
+	parser.add_argument('-c', '--cik', help='cik of company')
+	parser.add_argument('-f', '--fuzzy', action='store_true', help='fuzzy match string type')
+
 	args = parser.parse_args()
-	f_type = args.f_type
+	f_type = args.type
+	start = args.start if args.start else '1900-01-01'
+	end = args.end if args.end else '2100-01-01'
+	fuzzy = args.fuzzy
+	cik = args.cik
+	fout_name = '_'.join(['all'] + filter(lambda x: x, vars(args).values())) + '.csv'
+
+	with open("all_form_idx.csv", "r") as fin:
+		data = list(csv.reader(fin, delimiter='\t'))
+	print("finished reading data")
+
 
 	num_f = 0
-	with open("all_{}_alike.csv".format(f_type), "w") as fout:
+	with open(fout_name.format(f_type), "w") as fout:
 		fout_content = csv.writer(fout, quotechar='\"', quoting=csv.QUOTE_NONNUMERIC, delimiter = ',')
-		for i in range(len(data)):
-			if f_type in data[i][0]:
-				fout_content.writerow(data[i])
-				num_f += 1
-	print("total number of S-1 alike is {}".format(num_f))
+		if f_type:
+			for i in range(len(data)):
+				if ((not cik) or (cik == data[i][2])) and (start <= data[i][3] <= end):
+					if (fuzzy and f_type in data[i][0]) or (f_type == data[i][0]):
+						fout_content.writerow(data[i])
+						num_f += 1
+		else:
+			for i in range(len(data)):
+				if ((not cik) or (cik == data[i][2])) and (start <= data[i][3] <= end):
+						fout_content.writerow(data[i])
+						num_f += 1
+	print("total number of rows retrieved is {}".format(num_f))
+	print('file saved to {}'.format(fout_name))
 
 
 
