@@ -19,7 +19,9 @@ if __name__ == '__main__':
 	end = args.end if args.end else '2100-01-01'
 	fuzzy = args.fuzzy
 	cik = args.cik
-	fout_name = '_'.join(['all'] + filter(lambda x: x, vars(args).values())) + '.csv'
+
+	args_vals = [v if k != 'fuzzy' else ('fuzzy' if v else '') for k, v in vars(args).items()]
+	fout_name = '_'.join(['all'] + filter(lambda x: x, args_vals)) + '.csv'
 
 	with open("all_form_idx.csv", "r") as fin:
 		data = list(csv.reader(fin, delimiter='\t'))
