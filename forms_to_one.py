@@ -3,7 +3,7 @@ import os
 from glob import glob
 
 form_dir = "forms"
-dest_file_name = "all_form_idx.csv"
+dest_file_name = "all_form_idx.tsv"
 with open(dest_file_name, "w") as fout:
 	fout_content = csv.writer(fout, quotechar='\"', quoting=csv.QUOTE_NONNUMERIC, delimiter = '\t')
 	for form_name in glob(os.path.join(form_dir, "*.txt")):
