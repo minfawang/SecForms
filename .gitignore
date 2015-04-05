@@ -1,4 +1,6 @@
 *.csv
+*.tsv
 *.pyc
 forms/
 test.py
+.DS_Store
