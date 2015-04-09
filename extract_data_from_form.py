@@ -43,12 +43,12 @@ if __name__ == '__main__':
 		elif k == 'fuzzy' and v:
 			args_vals.append('fuzzy')
 		elif k == 'input':
-			args_vals.append(v[1][:-4])
+			args_vals.append(v[1][:-4].replace('/', '-').replace('\\', '-'))
 
 	fout_name = '_'.join(['all'] + filter(lambda x: x, args_vals)) + '.csv'
 
 
-	with open(fin_name, "r") as fin:
+	with open(fin_name, "rU") as fin:
 		if fin_name[-3:] == 'tsv':
 			data = list(csv.reader(fin, delimiter='\t'))
 		elif fin_name[-3:] == 'csv':
