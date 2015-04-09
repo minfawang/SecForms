@@ -1,6 +1,7 @@
 *.csv
 *.tsv
 *.pyc
+!toSearch.csv
 forms/
 test.py
 .DS_Store
