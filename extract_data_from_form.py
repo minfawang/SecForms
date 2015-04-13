@@ -1,6 +1,6 @@
-def extract(args, data, out_dir):
-	import csv
-	import os
+import csv
+import os
+def extract(args, data, out_dir, save_file=True):
 
 
 	message = '\n-------------------------------------\n'
@@ -40,25 +40,34 @@ def extract(args, data, out_dir):
 		elif k == 'input':
 			args_vals.append('datafile=' + v[1][:-4].replace('/', '-').replace('\\', '-'))
 
-	fout_name = '$'.join(args_vals) + '.csv'
-	fout_name = os.path.join(out_dir, fout_name)
-
-
 
 	num_f = 0
-	with open(fout_name.format(f_type), "w") as fout:
-		fout_content = csv.writer(fout, quotechar='\"', quoting=csv.QUOTE_NONNUMERIC, delimiter = ',')
-		for i in range(len(data)):
-			if (ic == -1) or (not cik) or (cik == data[i][ic]):
-				if (id == -1) or (start <= data[i][id] <= end):
-					if (it == -1) or (not f_type) or (fuzzy and f_type in data[i][it]) or (f_type == data[i][it]):
-						fout_content.writerow(data[i])
-						num_f += 1
+	data_out = []
+	for i in range(len(data)):
+		if (ic == -1) or (not cik) or (cik == data[i][ic]):
+			if (id == -1) or (start <= data[i][id] <= end):
+				if (it == -1) or (not f_type) or (fuzzy and f_type in data[i][it]) or (f_type == data[i][it]):
+					data_out.append(data[i])
+					num_f += 1
+
 	print('search result: ')
 	print("total number of rows retrieved is {}".format(num_f))
-	print('file saved to {}'.format(fout_name))
-	print('-------------------------------------\n')
 
+	if save_file:
+		fout_name = '$'.join(args_vals) + '.csv'
+		fout_name = os.path.join(out_dir, fout_name)
+		write_to_file(fout_name, data_out)
+
+	print('-------------------------------------\n')
+	return data_out
+
+
+
+def write_to_file(fout_name, data):
+	with open(fout_name, "w") as fout:
+		fout_content = csv.writer(fout, quotechar='\"', quoting=csv.QUOTE_NONNUMERIC, delimiter = ',')
+		fout_content.writerows(data)
+	print('file saved to {}'.format(fout_name))
 
 
 def read_data(col_names, fin_name):

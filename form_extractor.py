@@ -1,6 +1,7 @@
+import os
 import argparse
 import csv
-from extract_data_from_form import extract
+from extract_data_from_form import *
 
 class FormExtractor:
 	def __init__(self, col_names, f_search, fuzzy, f_data, out_dir):
@@ -59,9 +60,16 @@ class FormExtractor:
 		row_dict['fuzzy'] = self.fuzzy
 
 		return argparse.Namespace(**row_dict)
+
 	def extract_by_row_parameters(self, row):
 		row_args = self.analyze_row(row)
-		extract(row_args, self.data, self.out_dir)
+		matched_rows = extract(row_args, self.data, self.out_dir, save_file=False)
+
+		rows_out = []
+		for match_row in matched_rows:
+			rows_out.append(row + match_row)
+		return rows_out
+
 
 	def extract_data(self):
 		if self.f_search[-3:] == 'tsv':
@@ -71,14 +79,18 @@ class FormExtractor:
 			with open(self.f_search, 'rU') as fin:
 				rows = list(csv.reader(fin))
 
-		for row in rows:
-			self.extract_by_row_parameters(row)
-
+		fout_name = self.f_search[:-4] + '$results' + self.f_search[-4:]
+		with open(fout_name, 'w') as fout:
+			fout_writer = csv.writer(fout, quotechar='\"', quoting=csv.QUOTE_NONNUMERIC, delimiter = ',')
+			for row in rows:
+				rows_out = self.extract_by_row_parameters(row)
+				fout_writer.writerows(rows_out)
+		print('finished extracting data')
+		print('file saved to {}'.format(fout_name))
 
 
 
 def main():
-	import os
 	OUT_DIR = 'search_results'
 	OUT_DIR = os.path.join(os.getcwd(), OUT_DIR)
 	if not os.path.isdir(OUT_DIR):

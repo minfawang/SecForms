@@ -18,9 +18,9 @@
 
 	Some examples:
 
-	*	`$ python extract_data_from_form.py -i t*cdl sample-input.csv -f -t S-1 -c 35921 -s 2001-03-21 -e 2009-05-18`
+	*	`$ python extract_data_from_form.py -i t*cdl sample_input.tsv -f -t S-1 -c 35921 -s 2001-03-21 -e 2009-05-18`
 		
-		It will search file `sample-input.csv` whose meanings of column names are specified as `t*cdl` and fuzzy match type `S-1` of company with CIK `35921` with publishing date starting from `2001-03-21` ending to `2009-05-18` inclusively. 
+		It will search file `sample_input.tsv` whose meanings of column names are specified as `t*cdl` and fuzzy match type `S-1` of company with CIK `35921` with publishing date starting from `2001-03-21` ending to `2009-05-18` inclusively. 
 		
 		Only `-i` is required argument. All other arguments are optional.
 
