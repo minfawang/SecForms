@@ -1,7 +1,7 @@
 import csv
 import os
 def extract(args, data, out_dir, save_file=True):
-
+	SEARCH_PATH = 'http://www.sec.gov/Archives/'
 
 	message = '\n-------------------------------------\n'
 	message += 'searching parameters:\n'
@@ -43,11 +43,13 @@ def extract(args, data, out_dir, save_file=True):
 
 	num_f = 0
 	data_out = []
-	for i in range(len(data)):
-		if (ic == -1) or (not cik) or (cik == data[i][ic]):
-			if (id == -1) or (start <= data[i][id] <= end):
-				if (it == -1) or (not f_type) or (fuzzy and f_type in data[i][it]) or (f_type == data[i][it]):
-					data_out.append(data[i])
+	for row in data:
+		if (ic == -1) or (not cik) or (cik == row[ic]):
+			if (id == -1) or (start <= row[id] <= end):
+				if (it == -1) or (not f_type) or (fuzzy and f_type in row[it]) or (f_type == row[it]):
+					if SEARCH_PATH not in row[-1]:
+						row[-1] = os.path.join(SEARCH_PATH, row[-1])
+					data_out.append(row)
 					num_f += 1
 
 	print('search result: ')

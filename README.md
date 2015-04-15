@@ -6,7 +6,7 @@
 
 	`$ python ftplib_download_forms.py`
 
-3. Run the 'forms_to_one.py' script to organize all forms into one file 'all_form_idx.csv'
+3. Run the 'forms_to_one.py' script to organize all forms into one file `all_form_idx.csv`
 
 	`$ python forms_to_one.py`
 
@@ -34,4 +34,18 @@
 	
 	`python form_extractor.py -s *c**tse toSearch.csv -i sample_input.tsv`
 	
-	An example of `toSearch.csv` file is included.
+	An example of `toSearch.csv` file is included. `*c**tse` specifies the column meaning of the file. The table below shows the meaning of each character.
+	
+	```
+	c => cik
+	t => form type
+	s => search starting date
+	e => search ending date
+	* => ignore this column
+	```
+
+	A row of `toSearch.csv` looks like 
+	
+	`junk, 183702, junk, junk, 10-Q, 1993-04-17, 1997-02-05`
+	
+	Note that the values of a row could be blank for all of its columns, which nicely gives the flexibility in searching.
